@@ -10,13 +10,13 @@ import 	(
 )
 
 type templateData struct{
-	CurrentYear int
-	Snippet *models.Snippet
-	Snippets []*models.Snippet
-	Form any
-	Flash string
-	IsAuthenticated bool
-	CSRFToken string
+	CurrentYear 	int
+	Snippet 		*models.Snippet
+	Snippets		 []*models.Snippet
+	Form 			any
+	Flash 			string
+	IsAuthenticated 	bool
+	CSRFToken 	string
 }
 
 func humanDate(t time.Time) string {
@@ -29,7 +29,7 @@ var functions = template.FuncMap {
 func newTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 	
-	pages, err := fs.Glob(ui.Files, "html/pages/*.tmpl")
+	pages, err := fs.Glob(ui.Files, "html/pages/*.html")
 	if err != nil {
 		return nil, err
 	}
@@ -39,8 +39,8 @@ func newTemplateCache() (map[string]*template.Template, error) {
 	for _, page := range pages {
 		name := filepath.Base(page)
 		patterns := []string{
-			"html/base.tmpl",
-			"html/partials/*.tmpl",
+			"html/base.html",
+			"html/partials/*.html",
 			page,
 		}
 		ts, err := template.New(name).Funcs(functions).ParseFS(ui.Files, patterns...)

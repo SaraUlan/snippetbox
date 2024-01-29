@@ -11,6 +11,8 @@ type Validator struct {
 	FieldErrors map[string]string
 }
 
+var EmailRX = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+
 func (v *Validator) Valid() bool {
 	return len(v.FieldErrors) == 0 && len(v.NonFieldErrors) == 0
 }
@@ -52,14 +54,13 @@ func PermittedInt(value int, permittedValues ...int) bool {
 		return false
 }
 
-var EmailRX = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
 func MinChars(value string, n int) bool {
-return utf8.RuneCountInString(value) >= n
+	return utf8.RuneCountInString(value) >= n
 }
 
 func Matches(value string, rx *regexp.Regexp) bool {
-return rx.MatchString(value)
+	return rx.MatchString(value)
 }
 
 func PermittedValue[T comparable](value T, permittedValues ...T) bool {

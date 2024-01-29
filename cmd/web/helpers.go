@@ -14,7 +14,7 @@ import (
 
 func (app *application) serverError(w http.ResponseWriter, err error) {
 	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())	
-	app.errorLog.Println(trace)
+	app.errorLog.Output(2, trace)
 
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 }
@@ -40,6 +40,7 @@ func (app *application) render(w http.ResponseWriter, status int, page string, d
 	err := ts.ExecuteTemplate(buf, "base", data)
 	if err != nil {
 		app.serverError(w, err)
+		return
 	}
 
 	w.WriteHeader(status)
@@ -50,7 +51,7 @@ func (app *application) render(w http.ResponseWriter, status int, page string, d
 func (app *application) newTemplateData(r *http.Request) *templateData {
 	return &templateData{
 		CurrentYear: time.Now().Year(),
-		Flash: app.SessionManager.PopString(r.Context(), "flash"),
+		Flash: app.sessionManager.PopString(r.Context(), "flash"),
 		IsAuthenticated: app.isAuthenticated(r),
 		CSRFToken: nosurf.Token(r), 
 	}

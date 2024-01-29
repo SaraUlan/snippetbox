@@ -5,15 +5,18 @@ import (
 	"errors" 
 	"strings" 
 	"time"
+
 	"github.com/go-sql-driver/mysql" 
 	"golang.org/x/crypto/bcrypt" 
 )
-	type User struct {
-	ID int
-	Name string
-	Email string
-	HashedPassword []byte
-	Created time.Time
+
+
+type User struct {
+	ID 					int
+	Name 				string
+	Email 				string
+	HashedPassword	    []byte
+	Created 			time.Time
 }
 type UserModel struct {
 	DB *sql.DB
@@ -63,7 +66,8 @@ func (m *UserModel) Authenticate(email, password string) (int, error) {
 			return 0, err
 		}
 	}
-	return id, nil}
+	return id, nil
+}
 
 func (m *UserModel) Exists(id int) (bool, error) {
 	var exists bool

@@ -18,14 +18,15 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+
 type application struct {
-	errorLog *log.Logger
-	infoLog *log.Logger
-	snippets *models.SnippetModel
-	users *models.UserModel
-	templateCache map[string]*template.Template
-	formDecoder *form.Decoder
-	SessionManager *scs.SessionManager
+	errorLog 	*log.Logger
+	infoLog  	*log.Logger
+	snippets  	*models.SnippetModel
+	users		*models.UserModel
+	templateCache		map[string]*template.Template
+	formDecoder			*form.Decoder
+	sessionManager *scs.SessionManager
 }
 
 func main() {
@@ -48,20 +49,21 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
-	formDecoder := form.NewDecoder()
-	sessionManager := scs.New()
-	sessionManager.Store = mysqlstore.New(db)
-	sessionManager.Lifetime = 12 * time.Hour
+		formDecoder := form.NewDecoder()
+		sessionManager := scs.New()
+		sessionManager.Store = mysqlstore.New(db)
+		sessionManager.Lifetime = 12 * time.Hour
 
-	sessionManager.Cookie.Secure = true
+		sessionManager.Cookie.Secure = true
 
 	app := &application{
 		errorLog:      errorLog,
 		infoLog:       infoLog,
- 		users:         &models.UserModel{DB: db},
-    	templateCache: templateCache,
-		formDecoder:   formDecoder,
-		SessionManager: sessionManager,
+		snippets:		&models.SnippetModel{DB: db},
+		users:			&models.UserModel{DB: db},
+		templateCache:  templateCache,
+		formDecoder: 	formDecoder,
+		sessionManager:  sessionManager,
 	}
 
 	tlsConfig := &tls.Config {
